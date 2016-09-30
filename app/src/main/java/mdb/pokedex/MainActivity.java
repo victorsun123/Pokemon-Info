@@ -1,8 +1,10 @@
 package mdb.pokedex;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton toggle3;
     Button button;
     FloatingActionButton floatingActionButton;
+    public static boolean listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +39,22 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<Pokedex.Pokemon> high = new ArrayList<Pokedex.Pokemon>();
 
 
-        for(int i=0; i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             displayed.add(list.get(i));
         }
 
-        for(int i=0;i<list.size();i++){
-            if(Integer.parseInt(list.get(i).hp)<50){
+        for (int i = 0; i < list.size(); i++) {
+            if (Integer.parseInt(list.get(i).hp) < 50) {
                 low.add(list.get(i));
-            }
-            else if(Integer.parseInt(list.get(i).hp)>=50 && Integer.parseInt(list.get(i).hp)<=100){
+            } else if (Integer.parseInt(list.get(i).hp) >= 50 && Integer.parseInt(list.get(i).hp) <= 100) {
                 medium.add(list.get(i));
-            }
-            else{
+            } else {
                 high.add(list.get(i));
             }
         }
 
 
-        for(int i = 0; i<low.size();i++){
+        for (int i = 0; i < low.size(); i++) {
             System.out.println(low.get(i).name);
         }
 
@@ -79,12 +80,11 @@ public class MainActivity extends AppCompatActivity {
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if(displayed.size()==0){
-                        for(int i=0; i<low.size();i++){
+                    if (displayed.size() == 0) {
+                        for (int i = 0; i < low.size(); i++) {
                             displayed.add(low.get(i));
                         }
-                    }
-                    else {
+                    } else {
                         for (int i = 0; i < low.size(); i++) {
                             for (int j = 0; j < displayed.size(); j++) {
                                 if (low.get(i).name.compareTo(displayed.get(j).name) < 0) {            //adds pokemon back to displayed list alphabetically
@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    for(int i=0;i<displayed.size();i++){
-                        if(Integer.parseInt(displayed.get(i).hp)<50){
+                    for (int i = 0; i < displayed.size(); i++) {
+                        if (Integer.parseInt(displayed.get(i).hp) < 50) {
                             displayed.remove(i);
                             i--;
                         }
@@ -109,16 +109,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         toggle2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if(displayed.size()==0){
-                        for(int i=0; i<medium.size();i++){
+                    if (displayed.size() == 0) {
+                        for (int i = 0; i < medium.size(); i++) {
                             displayed.add(medium.get(i));
                         }
-                    }
-                    else {
+                    } else {
                         for (int i = 0; i < medium.size(); i++) {
                             if (displayed.size() == 0) displayed.add(medium.get(0));
                             for (int j = 0; j < displayed.size(); j++) {
@@ -131,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    for(int i=0;i<displayed.size();i++){
-                        if(Integer.parseInt(displayed.get(i).hp)>=50 && Integer.parseInt(displayed.get(i).hp)<=100){
+                    for (int i = 0; i < displayed.size(); i++) {
+                        if (Integer.parseInt(displayed.get(i).hp) >= 50 && Integer.parseInt(displayed.get(i).hp) <= 100) {
                             displayed.remove(i);
                             i--;
                         }
@@ -146,12 +144,11 @@ public class MainActivity extends AppCompatActivity {
         toggle3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    if(displayed.size()==0){ //adding empty list back in
-                        for(int i=0; i<high.size();i++){
+                    if (displayed.size() == 0) { //adding empty list back in
+                        for (int i = 0; i < high.size(); i++) {
                             displayed.add(high.get(i));
                         }
-                    }
-                    else {
+                    } else {
                         for (int i = 0; i < high.size(); i++) {
                             if (displayed.size() == 0) displayed.add(high.get(0));
                             for (int j = 0; j < displayed.size(); j++) {
@@ -164,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    for(int i=0;i<displayed.size();i++){
-                        if(Integer.parseInt(displayed.get(i).hp)>100){
+                    for (int i = 0; i < displayed.size(); i++) {
+                        if (Integer.parseInt(displayed.get(i).hp) > 100) {
                             displayed.remove(i);
                             i--;
                         }
@@ -177,21 +174,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         pokeAdapter = new PokeAdapter(getApplicationContext(), displayed);
 
         recyclerView.setAdapter(pokeAdapter);
 
+        listView = true;
 
         button = (Button) findViewById(R.id.button);
         button.setText("GridView");
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                if(listView) {
+                    recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                    button.setText("ListView");
+                }
+                else{
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    button.setText("GridView");
+                }
+                listView = !listView;
+                pokeAdapter.notifyDataSetChanged();
             }
         });
 
@@ -199,9 +204,12 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SearchActivity.class);
+                startActivity(intent);
 
             }
         });
+
+
     }
-    
 }

@@ -5,6 +5,7 @@ package mdb.pokedex;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +35,12 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.CustomViewHold
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
 //        This "inflates" the views, using the layout R.layout.row_view
-        // TODO: 2/26/16 Insert the correct parameter below. You can use Google or other resources to see what belongs there.
+        //if(MainActivity.listView){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view, parent, false);
+        //}
+        //else
+          //  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_view, parent, false);
         return new CustomViewHolder(view);
     }
 
@@ -52,7 +55,6 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.CustomViewHold
 
 
         holder.pokemonTextView.setText(pokemon.name);
-        // TODO: 2/26/16 Finish this method. Use the line above as a guide (I was tempted to remove it, but you're welcome!)
 
 
         String name = pokemon.name.toLowerCase();
@@ -79,9 +81,11 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.CustomViewHold
             this.imageView = (ImageView) view.findViewById(R.id.imageView);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-
-                }
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, ProfileActivity.class);
+                        intent.putExtra("POKEMON", getAdapterPosition());
+                        imageView.getContext().startActivity(intent);
+                    }
             });
             /*Think about what we said in the comment above onCreateViewHolder to determine the
             purpose of the ViewHolder. Does it make sense why we are doing this in the constructor?
