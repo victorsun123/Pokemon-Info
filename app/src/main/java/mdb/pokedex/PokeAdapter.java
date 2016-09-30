@@ -77,7 +77,12 @@ public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.CustomViewHold
             super(view);
             this.pokemonTextView = (TextView) view.findViewById(R.id.pokemonNameTextView);
             this.imageView = (ImageView) view.findViewById(R.id.imageView);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
             /*Think about what we said in the comment above onCreateViewHolder to determine the
             purpose of the ViewHolder. Does it make sense why we are doing this in the constructor?
             */
