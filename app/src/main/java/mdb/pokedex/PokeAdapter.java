@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class PokeAdapter extends RecyclerView.Adapter<PokeAdapter.CustomViewHolder> {
     private Context context;
-    private ArrayList<Pokedex.Pokemon> pokemonArrayList;
+    public ArrayList<Pokedex.Pokemon> pokemonArrayList;
 
     public PokeAdapter(Context context, ArrayList<Pokedex.Pokemon> pokemon) {
         this.context = context;
