@@ -1,6 +1,7 @@
 package mdb.pokedex;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,12 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     PokeAdapter pokeAdapter;
+    RecyclerView recyclerView;
+    ToggleButton toggle;
+    ToggleButton toggle2;
+    ToggleButton toggle3;
+    Button button;
+    FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +57,19 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(low.get(i).name);
         }
 
-        final ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
+        toggle = (ToggleButton) findViewById(R.id.toggleButton);
         toggle.setChecked(true);
         toggle.setText("Low");
         toggle.setTextOn("Low");
         toggle.setTextOff("Low");
 
-        final ToggleButton toggle2 = (ToggleButton) findViewById(R.id.toggleButton2);
+        toggle2 = (ToggleButton) findViewById(R.id.toggleButton2);
         toggle2.setChecked(true);
         toggle2.setText("Medium");
         toggle2.setTextOn("Medium");
         toggle2.setTextOff("Medium");
 
-        final ToggleButton toggle3 = (ToggleButton) findViewById(R.id.toggleButton3);
+        toggle3 = (ToggleButton) findViewById(R.id.toggleButton3);
         toggle3.setChecked(true);
         toggle3.setText("High");
         toggle3.setTextOn("High");
@@ -72,15 +79,21 @@ public class MainActivity extends AppCompatActivity {
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    for(int i=0; i<low.size();i++){
-                        for(int j=0;j<displayed.size();j++){
-                            if(low.get(i).name.compareTo(displayed.get(j).name)<0) {            //adds pokemon back to displayed list alphabetically
-                                displayed.add(j,low.get(i));
-                                j=displayed.size();
+                    if(displayed.size()==0){
+                        for(int i=0; i<low.size();i++){
+                            displayed.add(low.get(i));
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < low.size(); i++) {
+                            for (int j = 0; j < displayed.size(); j++) {
+                                if (low.get(i).name.compareTo(displayed.get(j).name) < 0) {            //adds pokemon back to displayed list alphabetically
+                                    displayed.add(j, low.get(i));
+                                    j = displayed.size();
+                                }
                             }
                         }
                     }
-
 
                 } else {
                     for(int i=0;i<displayed.size();i++){
@@ -100,15 +113,22 @@ public class MainActivity extends AppCompatActivity {
         toggle2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    for(int i=0; i<medium.size();i++){
-                        for(int j=0;j<displayed.size();j++){
-                            if(medium.get(i).name.compareTo(displayed.get(j).name)<0) {            //adds pokemon back to displayed list alphabetically
-                                displayed.add(j,medium.get(i));
-                                j=displayed.size();
+                    if(displayed.size()==0){
+                        for(int i=0; i<medium.size();i++){
+                            displayed.add(medium.get(i));
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < medium.size(); i++) {
+                            if (displayed.size() == 0) displayed.add(medium.get(0));
+                            for (int j = 0; j < displayed.size(); j++) {
+                                if (medium.get(i).name.compareTo(displayed.get(j).name) < 0) {            //adds pokemon back to displayed list alphabetically
+                                    displayed.add(j, medium.get(i));
+                                    j = displayed.size();
+                                }
                             }
                         }
                     }
-
 
                 } else {
                     for(int i=0;i<displayed.size();i++){
@@ -126,15 +146,22 @@ public class MainActivity extends AppCompatActivity {
         toggle3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    for(int i=0; i<high.size();i++){
-                        for(int j=0;j<displayed.size();j++){
-                            if(high.get(i).name.compareTo(displayed.get(j).name)<0) {            //adds pokemon back to displayed list alphabetically
-                                displayed.add(j,high.get(i));
-                                j=displayed.size();
+                    if(displayed.size()==0){ //adding empty list back in
+                        for(int i=0; i<high.size();i++){
+                            displayed.add(high.get(i));
+                        }
+                    }
+                    else {
+                        for (int i = 0; i < high.size(); i++) {
+                            if (displayed.size() == 0) displayed.add(high.get(0));
+                            for (int j = 0; j < displayed.size(); j++) {
+                                if (high.get(i).name.compareTo(displayed.get(j).name) < 0) {            //adds pokemon back to displayed list alphabetically
+                                    displayed.add(j, high.get(i));
+                                    j = displayed.size();
+                                }
                             }
                         }
                     }
-
 
                 } else {
                     for(int i=0;i<displayed.size();i++){
@@ -151,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -160,8 +187,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(pokeAdapter);
 
 
-        Button button = (Button) findViewById(R.id.button);
+        button = (Button) findViewById(R.id.button);
+        button.setText("GridView");
         button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
+
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             }
